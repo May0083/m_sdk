@@ -5,7 +5,7 @@ import os
 
 def main():
     path = os.path.dirname(__file__)+"\\sdk_data.bin"
-
+    # ↑このデータはCard.all()したもの
     with open(path, 'rb') as base_file:
         cards  = pickle.load(base_file)
 
@@ -19,6 +19,7 @@ def main():
             multiverseid = c.multiverse_id
     print(multiverseid) #とりあえず3枚目のID取れる。
 
+    print(type(cards[0])) #<class 'mtgsdk.card.Card'>
 
     #できると思ったけどできなかった方法
     filter_result = filter(lambda x:x["name"]=="Thalia, Guardian of Thraben",cards)
