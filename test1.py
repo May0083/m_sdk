@@ -20,6 +20,7 @@ def main():
 
 
     #最初に改善したい部分　test2.pyで試行錯誤中
+    #for for ifから卒業したい…
     for x in card_j:
         id = 0
         for c in cards:
