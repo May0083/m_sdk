@@ -4,35 +4,8 @@ import os
 import pickle
 
 def main():
-    #やりたいこと
-    #all_cardの情報の一部をpatchに登録する。
-
-
-    #skd_dataとoneの読み込み------------------------------------
-    sdk_data_path = os.path.dirname(__file__)+"/ktk.bin"
-
-    with open(sdk_data_path, 'rb') as base_file:
-        cards  = pickle.load(base_file)
-
-    #必要な情報を配列に入れ直す
-    #汚い…
-    
-
-    ex = []
-    for card in cards:
-        for foreign_name in card.foreign_names:
-            jpid = get_jpid(foreign_name)
-            ex.append({"name":card.name,"multiverse_id":card.multiverse_id,"jp_multiverse_id":jpid})
-
-    print(ex)
-
-    #one.json読み込み----------------------------------
-
-    one_path = os.path.dirname(__file__)+"/one.json"
-    card_json = open(one_path, 'r',encoding="utf-8")
-    card_j= json.load(card_json)
-    card_json.close()
-
+    ex = read_bin()
+    card_j = read_json()
 
     #名前で検索してid登録～～～----------------------------------
 
@@ -46,11 +19,34 @@ def main():
         except:
             pass
 
-    #データを保存-----------------------------------------------------------------------------------
+    save_data()
+
+def read_bin():
+    sdk_data_path = os.path.dirname(__file__)+"/ktk.bin"
+
+    with open(sdk_data_path, 'rb') as base_file:
+        cards  = pickle.load(base_file)
+
+    ex = []
+    for card in cards:
+        for foreign_name in card.foreign_names:
+            jpid = get_jpid(foreign_name)
+            ex.append({"name":card.name,"multiverse_id":card.multiverse_id,"jp_multiverse_id":jpid})
+
+    return ex
+
+def read_json():
+    one_path = os.path.dirname(__file__)+"/one.json"
+    card_json = open(one_path, 'r',encoding="utf-8")
+    card_j= json.load(card_json)
+    card_json.close()
+    return card_j
+
+def save_data():
     output_path = os.path.dirname(__file__) + "/output.json"
-    fw = open(output_path,'w',encoding='utf-8')
-    json.dump(card_j,fw,indent=4,ensure_ascii=False)
-    fw.close()
+    f = open(output_path,'w',encoding='utf-8')
+    json.dump(card_j,f,indent=4,ensure_ascii=False)
+    f.close()
 
 def get_jpid(foreign_name):
 # 日本語見つけたらmultiverseid返すよ関数
