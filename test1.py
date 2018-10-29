@@ -19,7 +19,7 @@ def main():
         except:
             pass
 
-    save_data()
+    save_data(card_j)
 
 def read_bin():
     sdk_data_path = os.path.dirname(__file__)+"/ktk.bin"
@@ -42,7 +42,7 @@ def read_json():
     card_json.close()
     return card_j
 
-def save_data():
+def save_data(card_j):
     output_path = os.path.dirname(__file__) + "/output.json"
     f = open(output_path,'w',encoding='utf-8')
     json.dump(card_j,f,indent=4,ensure_ascii=False)
