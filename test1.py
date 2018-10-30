@@ -12,6 +12,11 @@ def main():
     for x in card_j:
         name = card_j[x]["name"]
         filter_result = filter(lambda x:x["name"] == name,ex)
+        #これをしたいがためにリストに作り直した
+        #cards = Card.all()
+        #filter_result = filter(lambda x:x["name"] == name,cards)
+        #↑こんな感じに出来ればよかったのに・・・
+        
         try:
             res = list(filter_result)[-1]
             card_j[x]["multiverseid"] = res["multiverseid"]
@@ -31,7 +36,7 @@ def read_bin():
     for card in cards:
         jpid = get_jpid(card)
         ex.append({"name":card.name,"multiverseid":card.multiverse_id,"jp_multiverseid":jpid})
-        
+
     print(ex)
     return ex
 
