@@ -28,19 +28,10 @@ def read_bin():
         cards  = pickle.load(base_file)
 
     ex = []
-
-    #地獄
     for card in cards:
-        jpid = 0
-        try: #他のエキスパンションだとcard.foreign_namesが存在しない場合があり、エラーが生じる。
-            for foreign_name in card.foreign_names:
-                if get_jpid(foreign_name) != 0: jpid = get_jpid(foreign_name)
-                #↑これがないとこの後に他の言語をチェックするとidが0に上書きされてしまう問題
-        except:
-            pass
-    #地獄
-
+        jpid = get_jpid(card)
         ex.append({"name":card.name,"multiverseid":card.multiverse_id,"jp_multiverseid":jpid})
+        
     print(ex)
     return ex
 
@@ -60,10 +51,16 @@ def save_data(card_j):
 
 def get_jpid(foreign_name):
 # 日本語見つけたらmultiverseid返すよ関数
-    if foreign_name["language"] == "Japanese":
-        return foreign_name["multiverseid"]
-    else:
-        return 0
+    jpid = 0
+    try: #他のエキスパンションだとcard.foreign_namesが存在しない場合があり、エラーが生じる。
+        for foreign_name in card.foreign_names:
+            if foreign_name["language"] == "Japanese":#これがないとこの後に他の言語をチェックするとidが0に上書きされてしまう問題
+                jpid = foreign_name["multiverseid"]
+    except:
+        pass
+    
+    return jpid
+
 
 if __name__=='__main__':
     main()
