@@ -34,14 +34,14 @@ def read_bin():
         jpid = 0
         try: #他のエキスパンションだとcard.foreign_namesが存在しない場合があり、エラーが生じる。
             for foreign_name in card.foreign_names:
-                if get_jpid(foreign_name) != 0:#この後に他の言語をチェックするとidが0に上書きされてしまう問題
-                    jpid = get_jpid(foreign_name)
+                if get_jpid(foreign_name) != 0: jpid = get_jpid(foreign_name)
+                #↑これがないとこの後に他の言語をチェックするとidが0に上書きされてしまう問題
         except:
             pass
     #地獄
 
         ex.append({"name":card.name,"multiverseid":card.multiverse_id,"jp_multiverseid":jpid})
-
+    print(ex)
     return ex
 
 
