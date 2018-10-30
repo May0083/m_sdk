@@ -14,8 +14,8 @@ def main():
         filter_result = filter(lambda x:x["name"] == name,ex)
         try:
             res = list(filter_result)[-1]
-            card_j[x]["multiverseid"] = res["multiverse_id"]
-            card_j[x]["jp_multiverseid"] = res["jp_multiverse_id"]
+            card_j[x]["multiverseid"] = res["multiverseid"]
+            card_j[x]["jp_multiverseid"] = res["jp_multiverseid"]
         except:
             pass
 
@@ -28,12 +28,22 @@ def read_bin():
         cards  = pickle.load(base_file)
 
     ex = []
+
+    #地獄
     for card in cards:
-        for foreign_name in card.foreign_names:
-            jpid = get_jpid(foreign_name)
-            ex.append({"name":card.name,"multiverse_id":card.multiverse_id,"jp_multiverse_id":jpid})
+        jpid = 0
+        try: #他のエキスパンションだとcard.foreign_namesが存在しない場合があり、エラーが生じる。
+            for foreign_name in card.foreign_names:
+                if get_jpid(foreign_name) != 0:#この後に他の言語をチェックするとidが0に上書きされてしまう問題
+                    jpid = get_jpid(foreign_name)
+        except:
+            pass
+    #地獄
+
+        ex.append({"name":card.name,"multiverseid":card.multiverse_id,"jp_multiverseid":jpid})
 
     return ex
+
 
 def read_json():
     one_path = os.path.dirname(__file__)+"/one.json"
