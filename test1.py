@@ -16,7 +16,7 @@ def main():
         #cards = Card.all()
         #filter_result = filter(lambda x:x["name"] == name,cards)
         #↑こんな感じに出来ればよかったのに・・・
-        
+
         try:
             res = list(filter_result)[-1]
             card_j[x]["multiverseid"] = res["multiverseid"]
@@ -35,6 +35,7 @@ def read_bin():
     ex = []
     for card in cards:
         jpid = get_jpid(card)
+        jptext = get_jptext(card)
         ex.append({"name":card.name,"multiverseid":card.multiverse_id,"jp_multiverseid":jpid})
 
     print(ex)
@@ -54,7 +55,7 @@ def save_data(card_j):
     json.dump(card_j,f,indent=4,ensure_ascii=False)
     f.close()
 
-def get_jpid(foreign_name):
+def get_jpid(card):
 # 日本語見つけたらmultiverseid返すよ関数
     jpid = 0
     try: #他のエキスパンションだとcard.foreign_namesが存在しない場合があり、エラーが生じる。
